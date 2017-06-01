@@ -3,17 +3,24 @@
 
 (def total-lifes 6)
 
-(defn lose []
-  (print "You lose!"))
-
-(defn win []
-  (print "You win!"))
+(defn lose [] (print "You lose!"))
+(defn win [] (print "You win!"))
 
 (defn missing-letters [word hits]
   (remove (fn [letter] (contains? hits (str letter))) word))
 
 (defn hit-whole-word? [word hits]
-  (empty? (missing-letters word hits))
+  (empty? (missing-letters word hits)))
+
+(defn read-letter! [] (read-line))
+
+(defn has-shot-in-word? [shot word] (.contains word shot))
+
+(defn validate-shot [shot lifes word hits]
+  (if (has-shot-in-word? shot word)
+    (game lifes word (conj hits shot))
+    (game (dec lifes) word hits)
+  )
 )
 
 (defn game [lifes word hits]
@@ -21,7 +28,7 @@
     (lose)
     (if (hit-whole-word? word hits)
       (win)
-      (print "Try again!")
+      (validate-shot (read-letter!) lifes word hits)
     )
   )
 )

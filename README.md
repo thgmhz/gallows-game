@@ -1,3 +1,3 @@
 # gallows-game
 
-Simple gallows game made to learn Closure
+Simple gallows game made to learn Clojure
