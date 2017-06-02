@@ -3,8 +3,8 @@
 
 (def total-lifes 6)
 
-(defn lose [] (print "You lose!"))
-(defn win [] (print "You win!"))
+(defn lose [] (print "Game over! :("))
+(defn win [] (print "Wow! Congratulations! You win! :)"))
 
 (defn missing-letters [word hits]
   (remove (fn [letter] (contains? hits (str letter))) word))
@@ -12,28 +12,26 @@
 (defn hit-whole-word? [word hits]
   (empty? (missing-letters word hits)))
 
-(defn read-letter! [] (read-line))
+(defn input-letter! []
+  (do
+    (println "Enter some letter: ")
+    (read-line)))
 
 (defn has-shot-in-word? [shot word] (.contains word shot))
 
-(defn validate-shot [shot lifes word hits]
-  (if (has-shot-in-word? shot word)
-    (game lifes word (conj hits shot))
-    (game (dec lifes) word hits)
-  )
-)
-
 (defn game [lifes word hits]
-  (if (= lifes 0)
-    (lose)
-    (if (hit-whole-word? word hits)
-      (win)
-      (validate-shot (read-letter!) lifes word hits)
-    )
-  )
-)
+  (cond
+    (= lifes 0) (lose)
+    (hit-whole-word? word hits) (win)
+  :else
+    (let [shot (input-letter!)]
+    (if (has-shot-in-word? shot word)
+      (do
+        (println "Yeah! You hit!")
+        (recur lifes word (conj hits shot)))
+      (do
+        (println "Bad choice! You lost one life!")
+        (recur (dec lifes) word hits))))))
 
-(defn -main
-  "I don't do a whole lot ... yet."
-  [& args]
-  (println "Hello, World!"))
+
+(game total-lifes "matrix" #{})
