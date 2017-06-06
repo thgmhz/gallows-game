@@ -19,7 +19,16 @@
 
 (defn has-shot-in-word? [shot word] (.contains word shot))
 
+(defn print-game [lifes word hits]
+  (println "Lifes: " lifes)
+  (doseq [letter (seq word)]
+    (if (contains? hits (str letter))
+      (print letter " ")
+      (print "_ ")))
+  (println))
+
 (defn game [lifes word hits]
+  (print-game lifes word hits)
   (cond
     (= lifes 0) (lose)
     (hit-whole-word? word hits) (win)
@@ -32,6 +41,5 @@
       (do
         (println "Bad choice! You lost one life!")
         (recur (dec lifes) word hits))))))
-
 
 (game total-lifes "matrix" #{})
