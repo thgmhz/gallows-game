@@ -17,7 +17,7 @@
     (println) (println "Enter some letter: ")
     (read-line)))
 
-(defn has-shot-in-word? [shot word] (.contains word shot))
+(defn has? [param1 param2] (.contains param2 param1))
 
 (defn print-game [lifes word hits]
   (println) (println "Lifes: " lifes)
@@ -32,11 +32,15 @@
     (= lifes 0) (lose)
     (hit-whole-word? word hits) (win)
   :else
-    (let [shot (input-letter!)]
-    (if (has-shot-in-word? shot word)
-      (do
-        (println) (println "### Yeah! You hit! ###") (println)
-        (recur lifes word (conj hits shot)))
+    (let [letter (input-letter!)]
+      (if (has? letter word)
+        (if (has? letter hits)
+          (do
+            (println) (println "### Hey! You've already tried this letter! ###") (println)
+            (recur lifes word (conj hits letter)))
+          (do
+            (println) (println "### Yeah! You hit! ###") (println)
+            (recur lifes word (conj hits letter))))
       (do
         (println) (println "### Bad choice! You lost one life! ####") (println)
         (recur (dec lifes) word hits))))))
