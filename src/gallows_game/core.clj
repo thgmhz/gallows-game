@@ -2,6 +2,7 @@
   (:gen-class))
 
 (def total-lifes 6)
+(def initial-word "matrix")
 
 (defn lose [] (println) (println "Game over! :("))
 (defn win [] (println) (println "Wow! Congratulations! You win! :)"))
@@ -45,4 +46,5 @@
         (println) (println "### Bad choice! You lost one life! ####") (println)
         (recur (dec lifes) word hits))))))
 
-(game total-lifes "matrix" #{})
+(defn -main [& args]
+  (game total-lifes initial-word #{}))
